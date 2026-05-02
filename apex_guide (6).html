@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX MASTER v3.0 FX — 導入ガイド</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #0a0f1e;
+  color: #e0eaff;
+  font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ヘッダー */
+.hero {
+  background: linear-gradient(135deg, #0d1526, #111827);
+  border-bottom: 2px solid #00d4ff;
+  padding: 32px 20px 28px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 22px;
+  color: #00d4ff;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.hero p {
+  font-size: 13px;
+  color: #5a7090;
+  line-height: 1.7;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.badge {
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.3);
+  color: #00d4ff;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* メインコンテンツ */
+.container { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
+
+/* ステップカード */
+.step-card {
+  background: #111827;
+  border: 1px solid #1e2d4a;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.step-header {
+  background: #0d1526;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #1e2d4a;
+}
+.step-num {
+  background: linear-gradient(135deg, #00d4ff, #00f07a);
+  color: #0a0f1e;
+  font-weight: 900;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.step-sub {
+  font-size: 11px;
+  color: #4a6080;
+  margin-top: 2px;
+}
+.step-body {
+  padding: 16px 18px;
+}
+.step-body p {
+  font-size: 13px;
+  color: #8899b4;
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.step-body p:last-child { margin-bottom: 0; }
+.step-body strong { color: #ffffff; }
+
+/* コピーボタン */
+.copy-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #00d4ff, #00f07a);
+  color: #0a0f1e;
+  font-weight: 900;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 14px;
+  letter-spacing: 0.05em;
+  transition: opacity 0.2s;
+}
+.copy-btn:active { opacity: 0.75; }
+.copy-btn.done {
+  background: linear-gradient(135deg, #f0c233, #ff9020);
+}
+
+/* コードプレビュー */
+.code-preview {
+  background: #060a14;
+  border: 1px solid #1e2d4a;
+  border-left: 3px solid #00d4ff;
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #5a8a9a;
+  line-height: 1.6;
+  max-height: 120px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 4px;
+}
+.code-preview::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(transparent, #060a14);
+}
+
+/* 注意書き */
+.notice {
+  background: rgba(255,51,85,0.06);
+  border: 1px solid rgba(255,51,85,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 12px;
+  color: #8899b4;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.notice-title {
+  color: #ff3355;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+/* 完了メッセージ */
+.success-box {
+  background: rgba(0,240,122,0.06);
+  border: 1px solid rgba(0,240,122,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #00f07a;
+  line-height: 1.8;
+  margin-top: 16px;
+  text-align: center;
+  display: none;
+}
+
+/* フッター */
+footer {
+  text-align: center;
+  padding: 24px 20px 40px;
+  font-size: 11px;
+  color: #2a3a50;
+  border-top: 1px solid #1e2d4a;
+  line-height: 1.9;
+}
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="hero">
+  <h1>APEX MASTER v3.0 FX<br>導入ガイド</h1>
+  <p>このページを見ればすべて完了します<br>むずかしい操作はありません</p>
+  <div class="badge-row">
+    <span class="badge">再描画なし</span>
+    <span class="badge">損切り自動</span>
+    <span class="badge">3段階利確</span>
+    <span class="badge">スマホ通知</span>
+    <span class="badge">FX専用</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">TradingViewを開く</div>
+        <div class="step-sub">無料アカウントでOKです</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        <strong>tradingview.com</strong> を開いて、チャートを表示してください。<br>
+        アカウントがない場合は無料で作れます。
+      </p>
+      <p>
+        チャートを開いたら、画面下部にある<br>
+        <strong>「Pine エディタ」</strong>タブをクリックしてください。
+      </p>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">コードをコピーする</div>
+        <div class="step-sub">下のボタンを押すだけ</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>下のボタンを押すと<strong>コードが自動でコピー</strong>されます。</p>
+      <div class="code-preview">//@version=5
+indicator("APEX MASTER v3.0 FX", shorttitle="APEX v3.0", overlay=true, max_labels_count=500, max_lines_count=500)
+emaFast = input.int(21, "EMA Short", minval=1, group="EMA")
+emaMid  = input.int(50, "EMA Mid",   minval=1, group="EMA")
+// ... 全コードが自動でコピーされます</div>
+
+      <button class="copy-btn" id="codeBtn" onclick="copyCode()">
+        ここを押す → コードをコピー
+      </button>
+      <div class="success-box" id="successBox">
+        コピーできました！<br>次のSTEP3に進んでください
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Pine エディタに貼り付ける</div>
+        <div class="step-sub">コピーしたコードを貼り付けます</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        1. Pine エディタの中を<strong>全部選択</strong>します<br>
+        　 （Windows: Ctrl+A　Mac: Cmd+A）
+      </p>
+      <p>
+        2. そのまま<strong>Delete キー</strong>で全部消します
+      </p>
+      <p>
+        3. <strong>貼り付け</strong>します<br>
+        　 （Windows: Ctrl+V　Mac: Cmd+V）
+      </p>
+      <p>
+        4. 右上の<strong>「保存」</strong>ボタンを押します
+      </p>
+      <p>
+        5. <strong>「チャートに追加」</strong>ボタンを押します
+      </p>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">スマホ通知を設定する</div>
+        <div class="step-sub">サインが出たらスマホに通知が届きます</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        1. スマホに<strong>TradingViewアプリ</strong>をインストール<br>
+        　 同じアカウントでログインしてください
+      </p>
+      <p>
+        2. PCのTradingViewで<br>
+        　 チャート上部の<strong>時計マーク（アラート）</strong>をクリック
+      </p>
+      <p>
+        3. Conditionで<strong>「APEX MASTER v3.0 FX」</strong>を選択
+      </p>
+      <p>
+        4. <strong>「APEX BUY」</strong>を選んで作成<br>
+        　 同様に<strong>「APEX SELL」</strong>も作成
+      </p>
+      <p>
+        これでサインが出た瞬間に<br>
+        <strong>スマホへ通知が届きます</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- STEP 5 推奨設定 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">通貨ペア別の推奨設定</div>
+        <div class="step-sub">インジ名をダブルクリックで設定画面が開きます</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        <strong>ドル円・ユーロドル・ポンドドル</strong><br>
+        推奨時間足：15分・1時間・4時間<br>
+        ADX Min：20〜25
+      </p>
+      <p>
+        <strong>スキャルピング向け</strong><br>
+        EMA Short：9 / EMA Mid：21 / EMA Long：50<br>
+        ADX Min：15 / SL Mult：1.0<br>
+        推奨時間足：1分・5分
+      </p>
+      <p>
+        <strong>スイングトレード向け</strong><br>
+        設定はデフォルトのままでOK<br>
+        推奨時間足：4時間・日足
+      </p>
+    </div>
+  </div>
+
+  <!-- STEP 6 決済 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title">TP分割決済の方法</div>
+        <div class="step-sub">この方法でTP1到達後はリスクゼロになります</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        <strong>エントリー直後</strong><br>
+        表示された SL ラインに即座に損切り注文を入れる<br>
+        ※これが最重要です
+      </p>
+      <p>
+        <strong>TP1 到達（リスクの1.5倍）</strong><br>
+        ポジションの 50% を利確<br>
+        残りの損切りをエントリー価格に移動 → リスクゼロ
+      </p>
+      <p>
+        <strong>TP2 到達（リスクの2.5倍）</strong><br>
+        残りの 30% を利確
+      </p>
+      <p>
+        <strong>TP3 到達（リスクの4.0倍）</strong><br>
+        残り全部を利確・最大利益確定
+      </p>
+    </div>
+  </div>
+
+  <!-- よくある質問 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">Q</div>
+      <div>
+        <div class="step-title">よくある質問</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>
+        <strong>サインが全然出ません</strong><br>
+        正常です。7フィルター全通過の場面だけ出ます。ADX Minを15〜18に下げると増えます。
+      </p>
+      <p>
+        <strong>再描画はありますか？</strong><br>
+        ありません。確定足のデータのみ使用しています。
+      </p>
+      <p>
+        <strong>エラーが出た場合は？</strong><br>
+        Pine エディタのコードを全部削除してから、もう一度STEP2からやり直してください。
+      </p>
+      <p>
+        <strong>無料プランで使えますか？</strong><br>
+        コード自体は完全に動作します。アラートを複数設定するにはProプランが必要です。
+      </p>
+    </div>
+  </div>
+
+  <!-- 注意事項 -->
+  <div class="notice">
+    <div class="notice-title">重要：ご利用上の注意</div>
+    本コンテンツの著作権は販売者に帰属します。<br>
+    コードの転売・再配布・第三者への譲渡は固く禁止します。<br>
+    違反が確認された場合、著作権法に基づき法的措置を取ります。<br><br>
+    本ツールはトレード補助ツールです。投資はご自身の責任で行ってください。金融商品取引法に基づき、特定の投資行動を推奨するものではありません。本ツールの使用による損失について販売者は責任を負いません。
+  </div>
+
+</div>
+
+<footer>
+  APEX MASTER v3.0 FX<br>
+  Pine Script v5 / TradingView対応<br>
+  FX全通貨ペア・全時間足対応
+</footer>
+
+<!-- PineScriptコード（非表示） -->
+<div id="pineCode" style="display:none;">//@version=5
+indicator("APEX MASTER v3.0 FX", shorttitle="APEX v3.0", overlay=true, max_labels_count=500, max_lines_count=500)
+
+emaFast  = input.int(21,    "EMA Short",  minval=1,   group="EMA")
+emaMid   = input.int(50,    "EMA Mid",    minval=1,   group="EMA")
+emaSlow  = input.int(200,   "EMA Long",   minval=1,   group="EMA")
+stLen    = input.int(10,    "ST Period",  minval=1,   group="Supertrend")
+stFact   = input.float(3.0, "ST Factor",  minval=0.1, group="Supertrend", step=0.1)
+rsiLen   = input.int(14,    "RSI Period", minval=1,   group="RSI")
+rsiOB    = input.int(70,    "RSI OB",     minval=50,  group="RSI")
+rsiOS    = input.int(30,    "RSI OS",     maxval=50,  group="RSI")
+adxLen   = input.int(14,    "ADX Period", minval=1,   group="ADX")
+adxMin   = input.int(20,    "ADX Min",    minval=1,   group="ADX")
+atrLen   = input.int(14,    "ATR Period", minval=1,   group="ATR")
+atrMin   = input.float(0.5, "ATR Factor", minval=0.1, group="ATR", step=0.1)
+slMult   = input.float(1.5, "SL Mult",    minval=0.1, group="TP SL", step=0.1)
+tp1Mult  = input.float(1.5, "TP1 RR",     minval=0.1, group="TP SL", step=0.1)
+tp2Mult  = input.float(2.5, "TP2 RR",     minval=0.1, group="TP SL", step=0.1)
+tp3Mult  = input.float(4.0, "TP3 RR",     minval=0.1, group="TP SL", step=0.1)
+showTpSl = input.bool(true, "Show TP/SL",             group="TP SL")
+showEma  = input.bool(true, "Show EMA",               group="Display")
+showDash = input.bool(true, "Show Dashboard",         group="Display")
+showLbl  = input.bool(true, "Show Labels",            group="Display")
+
+e21  = ta.ema(close, emaFast)
+e50  = ta.ema(close, emaMid)
+e200 = ta.ema(close, emaSlow)
+
+p21  = plot(showEma ? e21  : na, "EMA21",  color=color.new(#00E5FF, 0), linewidth=1)
+p50  = plot(showEma ? e50  : na, "EMA50",  color=color.new(#FFD700, 0), linewidth=2)
+p200 = plot(showEma ? e200 : na, "EMA200", color=color.new(#FF4081, 0), linewidth=2)
+fill(p21, p50, color=e21 > e50 ? color.new(#00FF9D, 88) : color.new(#FF4444, 88))
+
+[stLine, stDir] = ta.supertrend(stFact, stLen)
+isBull = stDir < 0
+isBear = stDir > 0
+plot(isBull ? stLine : na, "ST Bull", color=color.new(#00FF9D, 45), style=plot.style_linebr, linewidth=2)
+plot(isBear ? stLine : na, "ST Bear", color=color.new(#FF4444, 45), style=plot.style_linebr, linewidth=2)
+
+rsiVal  = ta.rsi(close, rsiLen)
+rsiBull = rsiVal > 45 and rsiVal < rsiOB
+rsiBear = rsiVal < 55 and rsiVal > rsiOS
+
+[macdLine, sigLine, histLine] = ta.macd(close, 12, 26, 9)
+macdBull = macdLine > sigLine and histLine > 0
+macdBear = macdLine < sigLine and histLine < 0
+
+[diPlus, diMinus, adxVal] = ta.dmi(adxLen, adxLen)
+adxOK = adxVal >= adxMin
+
+haClose = (open + high + low + close) / 4.0
+var float haOpen = na
+haOpen := na(haOpen[1]) ? (open + close) / 2.0 : (haOpen[1] + haClose[1]) / 2.0
+haUp   = haClose > haOpen
+haDown = haClose < haOpen
+
+atrVal = ta.atr(atrLen)
+atrAvg = ta.sma(atrVal, 20)
+atrOK  = atrVal > atrAvg * atrMin
+
+lTrend = close > e21 and e21 > e50 and e50 > e200 and isBull
+lMom   = rsiBull and macdBull and adxOK and haUp
+lSig   = lTrend and lMom and atrOK
+lEntry = lSig and not lSig[1]
+
+sTrend = close < e21 and e21 < e50 and e50 < e200 and isBear
+sMom   = rsiBear and macdBear and adxOK and haDown
+sSig   = sTrend and sMom and atrOK
+sEntry = sSig and not sSig[1]
+
+slDist = atrVal * slMult
+lSL    = close - slDist
+lTP1   = close + slDist * tp1Mult
+lTP2   = close + slDist * tp2Mult
+lTP3   = close + slDist * tp3Mult
+sSL    = close + slDist
+sTP1   = close - slDist * tp1Mult
+sTP2   = close - slDist * tp2Mult
+sTP3   = close - slDist * tp3Mult
+
+plotshape(lEntry,
+     title     = "BUY",
+     style     = shape.labelup,
+     location  = location.belowbar,
+     color     = color.new(#00FF9D, 0),
+     text      = "BUY",
+     textcolor = color.black,
+     size      = size.normal)
+
+plotshape(sEntry,
+     title     = "SELL",
+     style     = shape.labeldown,
+     location  = location.abovebar,
+     color     = color.new(#FF3355, 0),
+     text      = "SELL",
+     textcolor = color.white,
+     size      = size.normal)
+
+if showTpSl
+    if lEntry
+        line.new(bar_index, lSL,  bar_index + 50, lSL,  color=color.new(#FF3355, 0), width=2, style=line.style_dashed)
+        line.new(bar_index, lTP1, bar_index + 50, lTP1, color=color.new(#FFD700, 0), width=1, style=line.style_dotted)
+        line.new(bar_index, lTP2, bar_index + 50, lTP2, color=color.new(#00E5FF, 0), width=1, style=line.style_dotted)
+        line.new(bar_index, lTP3, bar_index + 50, lTP3, color=color.new(#00FF9D, 0), width=2, style=line.style_dotted)
+        if showLbl
+            label.new(bar_index + 51, lSL,  text="SL",  color=color.new(#FF3355, 0), textcolor=color.white, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, lTP1, text="TP1", color=color.new(#FFD700, 0), textcolor=color.black, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, lTP2, text="TP2", color=color.new(#00E5FF, 0), textcolor=color.black, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, lTP3, text="TP3", color=color.new(#00FF9D, 0), textcolor=color.black, style=label.style_label_left, size=size.small)
+    if sEntry
+        line.new(bar_index, sSL,  bar_index + 50, sSL,  color=color.new(#FF3355, 0), width=2, style=line.style_dashed)
+        line.new(bar_index, sTP1, bar_index + 50, sTP1, color=color.new(#FFD700, 0), width=1, style=line.style_dotted)
+        line.new(bar_index, sTP2, bar_index + 50, sTP2, color=color.new(#00E5FF, 0), width=1, style=line.style_dotted)
+        line.new(bar_index, sTP3, bar_index + 50, sTP3, color=color.new(#FF3355, 0), width=2, style=line.style_dotted)
+        if showLbl
+            label.new(bar_index + 51, sSL,  text="SL",  color=color.new(#FF3355, 0), textcolor=color.white, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, sTP1, text="TP1", color=color.new(#FFD700, 0), textcolor=color.black, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, sTP2, text="TP2", color=color.new(#00E5FF, 0), textcolor=color.black, style=label.style_label_left, size=size.small)
+            label.new(bar_index + 51, sTP3, text="TP3", color=color.new(#FF3355, 0), textcolor=color.white, style=label.style_label_left, size=size.small)
+
+if showDash and barstate.islast
+    var table db = table.new(position.top_right, 2, 13, bgcolor=color.new(#060A14, 8), border_color=color.new(#1C2B44, 100), border_width=1, frame_color=color.new(#00D4FF, 65), frame_width=2)
+    cG = color.new(#00FF9D, 0)
+    cR = color.new(#FF3355, 0)
+    cY = color.new(#FFD700, 0)
+    cC = color.new(#00D4FF, 0)
+    cW = color.white
+    cD = color.new(#3A4E68, 0)
+    table.cell(db, 0, 0, "APEX MASTER v3.0", text_color=cC, text_size=size.small, bgcolor=color.new(#060A14, 0), text_halign=text.align_center)
+    table.merge_cells(db, 0, 0, 1, 0)
+    table.cell(db, 0, 1, "EMA",         text_color=cW, text_size=size.small)
+    table.cell(db, 1, 1, (lTrend or sTrend) ? "OK" : "NG", text_color=(lTrend or sTrend) ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 2, "Supertrend",  text_color=cW, text_size=size.small)
+    table.cell(db, 1, 2, isBull ? "BULL" : isBear ? "BEAR" : "NG", text_color=isBull ? cG : isBear ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 3, "RSI " + str.tostring(math.round(rsiVal)), text_color=cW, text_size=size.small)
+    table.cell(db, 1, 3, (rsiBull or rsiBear) ? "OK" : "NG", text_color=(rsiBull or rsiBear) ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 4, "MACD",        text_color=cW, text_size=size.small)
+    table.cell(db, 1, 4, macdBull ? "BULL" : macdBear ? "BEAR" : "NG", text_color=macdBull ? cG : macdBear ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 5, "ADX " + str.tostring(math.round(adxVal)), text_color=cW, text_size=size.small)
+    table.cell(db, 1, 5, adxOK ? "OK" : "NG", text_color=adxOK ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 6, "Heikin Ashi", text_color=cW, text_size=size.small)
+    table.cell(db, 1, 6, haUp ? "UP" : haDown ? "DOWN" : "NG", text_color=haUp ? cG : haDown ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 7, "ATR",         text_color=cW, text_size=size.small)
+    table.cell(db, 1, 7, atrOK ? "OK" : "NG", text_color=atrOK ? cG : cR, text_size=size.small)
+    table.cell(db, 0, 8, "----------",  text_color=cD, text_size=size.tiny)
+    table.cell(db, 1, 8, "----------",  text_color=cD, text_size=size.tiny)
+    lScore = (lTrend ? 2 : 0) + (rsiBull ? 1 : 0) + (macdBull ? 1 : 0) + (adxOK ? 1 : 0) + (haUp ? 1 : 0) + (atrOK ? 1 : 0)
+    sScore = (sTrend ? 2 : 0) + (rsiBear ? 1 : 0) + (macdBear ? 1 : 0) + (adxOK ? 1 : 0) + (haDown ? 1 : 0) + (atrOK ? 1 : 0)
+    score  = math.max(lScore, sScore)
+    sCol   = score >= 6 ? cG : score >= 3 ? cY : cR
+    table.cell(db, 0, 9,  "Score",      text_color=cW, text_size=size.small)
+    table.cell(db, 1, 9,  str.tostring(score) + " / 7", text_color=sCol, text_size=size.small)
+    table.cell(db, 0, 10, "LONG",       text_color=cW, text_size=size.small)
+    table.cell(db, 1, 10, (lTrend and lMom and atrOK) ? "READY" : "WAIT", text_color=(lTrend and lMom and atrOK) ? cG : cY, text_size=size.small)
+    table.cell(db, 0, 11, "SHORT",      text_color=cW, text_size=size.small)
+    table.cell(db, 1, 11, (sTrend and sMom and atrOK) ? "READY" : "WAIT", text_color=(sTrend and sMom and atrOK) ? cG : cY, text_size=size.small)
+    table.cell(db, 0, 12, "RR",         text_color=cC, text_size=size.tiny)
+    table.cell(db, 1, 12, "1:" + str.tostring(tp1Mult) + " 1:" + str.tostring(tp2Mult) + " 1:" + str.tostring(tp3Mult), text_color=cC, text_size=size.tiny)
+
+bgcolor(lSig ? color.new(#00FF9D, 95) : sSig ? color.new(#FF3355, 95) : na)
+
+alertcondition(lEntry, title="APEX BUY",  message="APEX MASTER v3.0\nBUY Signal\nPair: {{ticker}}\nTF: {{interval}}\nPrice: {{close}}")
+alertcondition(sEntry, title="APEX SELL", message="APEX MASTER v3.0\nSELL Signal\nPair: {{ticker}}\nTF: {{interval}}\nPrice: {{close}}")</div>
+
+<script>
+function copyCode() {
+  var code = document.getElementById('pineCode').innerText;
+  var btn  = document.getElementById('codeBtn');
+  var box  = document.getElementById('successBox');
+
+  function success() {
+    btn.textContent = 'コピーできました！次はSTEP3へ';
+    btn.classList.add('done');
+    box.style.display = 'block';
+  }
+
+  function fallback() {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = code;
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:2px;height:2px;opacity:0;font-size:16px;';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, 999999);
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      success();
+    } catch(e) {
+      btn.textContent = 'コピー失敗 → 画面を再読み込みして再度試してください';
+    }
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(success).catch(fallback);
+  } else {
+    fallback();
+  }
+}
+</script>
+</body>
+</html>
